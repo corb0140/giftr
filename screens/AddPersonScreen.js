@@ -29,6 +29,11 @@ const AddPersonScreen = ({ navigation }) => {
     dispatch(addPerson(person));
   };
 
+  const resetFormHandler = () => {
+    setName("");
+    setSelectedDate("");
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.textView}>
@@ -64,7 +69,12 @@ const AddPersonScreen = ({ navigation }) => {
           <Text style={styles.buttonText}>Save</Text>
         </Pressable>
 
-        <Pressable style={[styles.button, { backgroundColor: "red" }]}>
+        <Pressable
+          style={[styles.button, { backgroundColor: "red" }]}
+          onPress={() => {
+            resetFormHandler(), navigation.goBack();
+          }}
+        >
           <Text style={styles.buttonText}>Cancel</Text>
         </Pressable>
       </View>
