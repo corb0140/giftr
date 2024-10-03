@@ -2,8 +2,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { Platform } from "react-native";
-
 import PeopleScreen from "./screens/PeopleScreen";
 import AddPersonScreen from "./screens/AddPersonScreen";
 import IdeaScreen from "./screens/IdeaScreen";
