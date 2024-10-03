@@ -1,17 +1,17 @@
-import { StyleSheet, Text, View, SafeAreaView, FLatList } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const PeopleScreen = () => {
   const { people } = useSelector((state) => state.people);
 
   useEffect(() => {
-    // console.log(people);
+    console.log(people);
     // if (people.length == 0) {
     //   alert("Please add a person");
     // }
-  }, []);
+  }, [people]);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.textView}>
@@ -24,16 +24,20 @@ const PeopleScreen = () => {
             No people have been added yet
           </Text>
         ) : (
-          <FLatList
-            data={people}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View style={styles.itemContainer}>
-                <Text style={styles.itemName}>{item.name}</Text>
-                <Text style={styles.itemDate}>{item.date}</Text>
-              </View>
-            )}
-          />
+          <>
+            <Text>People List</Text>
+
+            <FlatList
+              data={people}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <View style={styles.itemContainer}>
+                  <Text style={styles.itemName}>{item.name}</Text>
+                  <Text style={styles.itemDate}>{item.date}</Text>
+                </View>
+              )}
+            />
+          </>
         )}
       </View>
     </SafeAreaView>

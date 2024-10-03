@@ -5,7 +5,7 @@ const initialState = {
 };
 
 const ideaSlice = createSlice({
-  name: "person",
+  name: "idea",
   initialState,
   reducers: {
     addIdea: (state, action) => {

@@ -7,18 +7,20 @@ import {
   Pressable,
 } from "react-native";
 import DatePicker from "react-native-modern-datepicker";
+import uuid from "react-native-uuid";
 
 import { useDispatch } from "react-redux";
 import { addPerson } from "../redux/slices/personSlice";
 import { useState } from "react";
 
-const AddPersonScreen = () => {
+const AddPersonScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const [selectedDate, setSelectedDate] = useState("");
   const [name, setName] = useState("");
 
   const person = {
+    id: uuid.v4(),
     name: name,
     date: selectedDate,
   };
@@ -40,20 +42,30 @@ const AddPersonScreen = () => {
             style={styles.input}
             placeholder="Name"
             placeholderTextColor="#1a1a1a"
-            placeholderTextSize="40"
             onChangeText={(text) => setName(text)}
           />
         </View>
-        <DatePicker onSelectedChange={(selectedDate) => {}} />
+
+        <DatePicker
+          onSelectedChange={(selectedDate) => {
+            setSelectedDate(selectedDate);
+          }}
+          mode="calendar"
+        />
       </View>
 
       <View style={styles.buttonContainer}>
-        <Pressable style={[styles.button, { backgroundColor: "deepskyblue" }]}>
-          <Text>Save</Text>
+        <Pressable
+          style={[styles.button, { backgroundColor: "deepskyblue" }]}
+          onPress={() => {
+            addPersonHandler(person), navigation.navigate("People");
+          }}
+        >
+          <Text style={styles.buttonText}>Save</Text>
         </Pressable>
 
         <Pressable style={[styles.button, { backgroundColor: "red" }]}>
-          <Text>Cancel</Text>
+          <Text style={styles.buttonText}>Cancel</Text>
         </Pressable>
       </View>
     </SafeAreaView>
@@ -81,7 +93,7 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   input: {
-    height: 30,
+    height: 40,
     borderBottomWidth: 1,
     borderBlockColor: "#1a1a1a",
     marginBottom: 20,
@@ -97,7 +109,10 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     padding: 12,
-    backgroundColor: "#f0f0f0",
     marginBottom: 15,
+  },
+  buttonText: {
+    fontSize: 15,
+    textTransform: "uppercase",
   },
 });
