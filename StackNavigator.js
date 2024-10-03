@@ -1,5 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
 import { Platform } from "react-native";
 
 import PeopleScreen from "./screens/PeopleScreen";
@@ -13,30 +15,28 @@ const Stack = createNativeStackNavigator();
 
 function Navigation() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="People"
-          component={PeopleScreen}
-          options={{
-            headerRight: () => {
-              return (
-                <Pressable
-                  onPress={() => {
-                    alert("Add Person");
-                  }}
-                >
-                  <Text>Add Person</Text>
-                </Pressable>
-              );
-            },
-          }}
-        />
-        <Stack.Screen name="AddPerson" component={AddPersonScreen} />
-        <Stack.Screen name="Idea" component={IdeaScreen} />
-        <Stack.Screen name="AddIdea" component={AddIdeaScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="People"
+            component={PeopleScreen}
+            options={({ navigation }) => ({
+              headerRight: () => {
+                return (
+                  <Pressable onPress={() => navigation.navigate("AddPerson")}>
+                    <Text>Add Person</Text>
+                  </Pressable>
+                );
+              },
+            })}
+          />
+          <Stack.Screen name="AddPerson" component={AddPersonScreen} />
+          <Stack.Screen name="Idea" component={IdeaScreen} />
+          <Stack.Screen name="AddIdea" component={AddIdeaScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 
