@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
-const PeopleScreen = () => {
+const PeopleScreen = ({ navigation }) => {
   const { people } = useSelector((state) => state.people);
 
   useEffect(() => {
@@ -37,7 +37,17 @@ const PeopleScreen = () => {
                   <Text style={styles.itemDate}>{item.date}</Text>
                 </View>
 
-                <MaterialIcons name="lightbulb" size={35} color="black" />
+                <MaterialIcons
+                  name="lightbulb"
+                  size={35}
+                  color="black"
+                  onPress={() =>
+                    navigation.navigate("Idea", {
+                      id: item.id,
+                      name: item.name,
+                    })
+                  }
+                />
               </View>
             )}
           />
