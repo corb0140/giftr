@@ -30,7 +30,19 @@ function Navigation() {
             })}
           />
           <Stack.Screen name="AddPerson" component={AddPersonScreen} />
-          <Stack.Screen name="Idea" component={IdeaScreen} />
+          <Stack.Screen
+            name="Idea"
+            component={IdeaScreen}
+            options={({ navigation }) => ({
+              headerRight: () => {
+                return (
+                  <Pressable onPress={() => navigation.navigate("AddIdea")}>
+                    <Text>Add Idea</Text>
+                  </Pressable>
+                );
+              },
+            })}
+          />
           <Stack.Screen name="AddIdea" component={AddIdeaScreen} />
         </Stack.Navigator>
       </NavigationContainer>

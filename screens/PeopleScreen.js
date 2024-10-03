@@ -21,7 +21,7 @@ const PeopleScreen = ({ navigation }) => {
 
       <View style={styles.peopleListView}>
         {people.length === 0 ? (
-          <View style={styles.test}>
+          <View style={styles.peopleListMessageView}>
             <Text style={styles.peopleListMessage}>
               No people have been added yet
             </Text>
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
   },
-  test: {
+  peopleListMessageView: {
     borderBottomWidth: 2,
     borderBottomColor: "#f0f0f0",
   },
