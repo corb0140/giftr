@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
 
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const PeopleScreen = () => {
   const { people } = useSelector((state) => state.people);
@@ -20,24 +21,26 @@ const PeopleScreen = () => {
 
       <View style={styles.peopleListView}>
         {people.length === 0 ? (
-          <Text style={styles.peopleListMessage}>
-            No people have been added yet
-          </Text>
+          <View style={styles.test}>
+            <Text style={styles.peopleListMessage}>
+              No people have been added yet
+            </Text>
+          </View>
         ) : (
-          <>
-            <Text>People List</Text>
-
-            <FlatList
-              data={people}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <View style={styles.itemContainer}>
+          <FlatList
+            data={people}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View style={styles.itemContainer}>
+                <View style={styles.itemInfo}>
                   <Text style={styles.itemName}>{item.name}</Text>
                   <Text style={styles.itemDate}>{item.date}</Text>
                 </View>
-              )}
-            />
-          </>
+
+                <MaterialIcons name="lightbulb" size={35} color="black" />
+              </View>
+            )}
+          />
         )}
       </View>
     </SafeAreaView>
@@ -53,6 +56,7 @@ const styles = StyleSheet.create({
   },
   textView: {
     paddingLeft: 10,
+    paddingRight: 10,
     paddingTop: 20,
   },
   heading: {
@@ -60,27 +64,39 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   peopleListView: {
-    paddingLeft: 10,
     paddingTop: 40,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  test: {
     borderBottomWidth: 2,
     borderBottomColor: "#f0f0f0",
   },
   peopleListMessage: {
     fontSize: 22,
     color: "#a0a0a0",
-    padding: 10,
+    paddingBottom: 10,
   },
   itemContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#f0f0f0",
+    borderBottomWidth: 2,
+    borderBlockColor: "#d0d0d0",
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+  },
+  itemInfo: {
+    flexDirection: "column",
+    gap: 8,
   },
   itemName: {
-    fontSize: 20,
+    fontSize: 25,
     fontWeight: "bold",
   },
   itemDate: {
-    fontSize: 16,
-    color: "#a0a0a0",
+    fontSize: 18,
+    color: "#1a1a1a",
+    opacity: 0.5,
   },
 });
