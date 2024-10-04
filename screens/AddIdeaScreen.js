@@ -35,7 +35,7 @@ const AddIdeaScreen = ({ navigation }) => {
       dispatch(
         addPersonIdea({
           personId: id,
-          idea: { id: uuid.v4(), idea: idea, image: image },
+          idea: { id: uuid.v4(), idea: idea, img: image, width: 0, height: 0 },
         })
       );
       navigation.navigate("Idea", {

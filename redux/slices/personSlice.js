@@ -4,8 +4,6 @@ const initialState = {
   people: [],
   name: "",
   id: 0,
-  width: 0,
-  height: 0,
 };
 
 const personSlice = createSlice({

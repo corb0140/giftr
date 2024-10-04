@@ -33,7 +33,7 @@ const IdeaScreen = ({ route }) => {
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View style={styles.ideaListMessageView}>
-                <Text style={styles.ideaListMessage}>{item.id}</Text>
+                <Text style={styles.ideaListMessage}>{item.idea}</Text>
               </View>
             )}
           />
