@@ -7,8 +7,10 @@ import {
   Platform,
   TextInput,
   Pressable,
+  Image,
 } from "react-native";
 
+import uuid from "react-native-uuid";
 import * as ImagePicker from "expo-image-picker";
 import { useDispatch } from "react-redux";
 
@@ -23,9 +25,10 @@ const AddIdeaScreen = ({ navigation }) => {
   const [idea, setIdea] = useState("");
   const [image, setImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [ratio, setRatio] = useState(0);
+  const [aspectRatio, setAspectRatio] = useState([2, 3]);
 
   const gift = {
+    id: uuid.v4(),
     idea: idea,
     image: image,
   };
@@ -58,7 +61,7 @@ const AddIdeaScreen = ({ navigation }) => {
 
     let result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
-      aspect: [2, 3],
+      aspect: aspectRatio,
       quality: 1,
     });
 
@@ -85,7 +88,12 @@ const AddIdeaScreen = ({ navigation }) => {
             />
           </View>
 
-          {image && <Image source={{ uri: image }} style={styles.image} />}
+          <View>
+            <Pressable onPress={takePhoto} style={styles.cameraButton}>
+              <Text style={styles.text}>Camera</Text>
+            </Pressable>
+            {image && <Image source={{ uri: image }} style={styles.image} />}
+          </View>
         </View>
 
         <View style={styles.buttonContainer}>

@@ -26,11 +26,11 @@ const AddPersonScreen = ({ navigation }) => {
   const person = {
     id: uuid.v4(),
     name: name,
-    date: selectedDate,
+    dob: selectedDate,
   };
 
   const addPersonHandler = (person) => {
-    if (person.name === "" || person.date === "") {
+    if (person.name === "" || person.dob === "") {
       setModalVisible(true);
     } else {
       dispatch(addPerson(person));

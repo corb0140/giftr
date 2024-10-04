@@ -34,7 +34,7 @@ const PeopleScreen = ({ navigation }) => {
               <View style={styles.itemContainer}>
                 <View style={styles.itemInfo}>
                   <Text style={styles.itemName}>{item.name}</Text>
-                  <Text style={styles.itemDate}>{item.date}</Text>
+                  <Text style={styles.itemDate}>{item.dob}</Text>
                 </View>
 
                 <MaterialIcons
