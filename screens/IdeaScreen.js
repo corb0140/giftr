@@ -1,49 +1,42 @@
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  Pressable,
-} from "react-native";
+import { SafeAreaView, StyleSheet, Text, View, FlatList } from "react-native";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { assignName, assignId } from "../redux/slices/ideaSlice";
+import { assignName, assignId } from "../redux/slices/personSlice";
 
 const IdeaScreen = ({ route }) => {
-  const { itemId, name } = route.params;
-  const { ideas } = useSelector((state) => state.ideas);
+  const { id, name } = route.params;
+  const { people } = useSelector((state) => state.people);
   const dispatch = useDispatch();
 
-  dispatch(assignName(name), assignId(itemId));
+  useEffect(() => {
+    dispatch(assignName(name));
+    dispatch(assignId(id));
+  }, [dispatch, id, name]);
 
   useEffect(() => {
-    console.log(ideas);
-  }, [ideas]);
+    console.log();
+    console.log(people[0].ideas);
+  }, [people]);
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Pressable style={styles.fab}>
-        <Text>Add Idea</Text>
-      </Pressable> */}
-
       <View style={styles.textView}>
         <Text style={styles.heading}>Ideas for {name}</Text>
       </View>
 
       <View style={styles.ideaListView}>
-        {ideas.length === 0 ? (
+        {people[0].ideas.length === 0 ? (
           <View style={styles.ideaListMessageView}>
             <Text style={styles.ideaListMessage}>No Ideas Added Yet</Text>
           </View>
         ) : (
           <FlatList
-            data={ideas}
+            data={people.ideas}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View style={styles.ideaListMessageView}>
-                <Text style={styles.ideaListMessage}>{item.idea}</Text>
+                <Text style={styles.ideaListMessage}>{item.name}</Text>
               </View>
             )}
           />

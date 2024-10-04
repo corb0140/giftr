@@ -16,16 +16,17 @@ import { useDispatch } from "react-redux";
 
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { addIdea } from "../redux/slices/ideaSlice";
+import { addPersonIdea } from "../redux/slices/personSlice";
 import ModalComponent from "../components/Modal";
 
 const AddIdeaScreen = ({ navigation }) => {
-  const { name, id } = useSelector((state) => state.ideas);
+  const { name, id } = useSelector((state) => state.people);
   const dispatch = useDispatch();
+
   const [idea, setIdea] = useState("");
   const [image, setImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [aspectRatio, setAspectRatio] = useState([2, 3]);
+  const [aspectRatio, setAspectRatio] = useState([2 / 3]);
 
   const gift = {
     id: uuid.v4(),
@@ -34,19 +35,19 @@ const AddIdeaScreen = ({ navigation }) => {
   };
 
   const addIdeaHandler = (gift) => {
-    if (gift.idea === "" || gift.image === null) {
+    if (gift.idea === "") {
       setModalVisible(true);
     } else {
-      dispatch(addIdea(gift));
+      dispatch(addPersonIdea({ personId: id, idea: gift }));
       navigation.navigate("Idea", {
-        itemId: id,
+        id: id,
         name: name,
       });
     }
   };
 
   const resetFormHandler = () => {
-    setGift("");
+    setIdea("");
     setImage(null);
     navigation.goBack();
   };
@@ -61,7 +62,6 @@ const AddIdeaScreen = ({ navigation }) => {
 
     let result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
-      aspect: aspectRatio,
       quality: 1,
     });
 
