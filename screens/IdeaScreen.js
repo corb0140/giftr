@@ -9,12 +9,16 @@ const IdeaScreen = ({ route }) => {
   const { people } = useSelector((state) => state.people);
   const dispatch = useDispatch();
 
+  const personIdeas = people.find((person) => person.id === id);
+
   useEffect(() => {
     dispatch(assignName(name));
     dispatch(assignId(id));
   }, [dispatch, id, name]);
 
-  const personIdeas = people.find((person) => person.id === id);
+  useEffect(() => {
+    console.log(personIdeas.ideas);
+  }, [people]);
 
   return (
     <SafeAreaView style={styles.container}>

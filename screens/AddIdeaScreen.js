@@ -10,6 +10,7 @@ import {
   Image,
 } from "react-native";
 
+import { Dimensions } from "react-native";
 import uuid from "react-native-uuid";
 import * as ImagePicker from "expo-image-picker";
 import { useDispatch } from "react-redux";
@@ -28,6 +29,10 @@ const AddIdeaScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [aspectRatio, setAspectRatio] = useState([2 / 3]);
 
+  const screenWidth = Dimensions.get("window").width;
+  const imageWidth = screenWidth * 0.6;
+  const imageHeight = imageWidth * aspectRatio;
+
   const addIdeaHandler = () => {
     if (idea === "") {
       setModalVisible(true);
@@ -35,7 +40,13 @@ const AddIdeaScreen = ({ navigation }) => {
       dispatch(
         addPersonIdea({
           personId: id,
-          idea: { id: uuid.v4(), idea: idea, img: image, width: 0, height: 0 },
+          idea: {
+            id: uuid.v4(),
+            idea: idea,
+            img: image,
+            width: Math.round(imageWidth),
+            height: Math.round(imageHeight),
+          },
         })
       );
       navigation.navigate("Idea", {

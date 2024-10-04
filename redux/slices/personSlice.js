@@ -22,7 +22,7 @@ const personSlice = createSlice({
         if (!person.ideas) {
           person.ideas = [];
         }
-        console.log(action.payload.idea);
+        // console.log(action.payload.idea);
         person.ideas.push(action.payload.idea);
       }
     },
