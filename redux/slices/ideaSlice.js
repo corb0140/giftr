@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   ideas: [],
+  id: 0,
+  name: "",
 };
 
 const ideaSlice = createSlice({
@@ -12,12 +14,20 @@ const ideaSlice = createSlice({
       state.ideas.push(action.payload);
     },
 
+    assignName: (state, action) => {
+      state.name = action.payload;
+    },
+
+    assignId: (state, action) => {
+      state.id = action.payload;
+    },
+
     deleteIdea: (state, action) => {
       state.ideas = state.ideas.filter((idea) => idea.id !== action.payload);
     },
   },
 });
 
-export const { addIdea } = ideaSlice.actions;
+export const { addIdea, assignName, assignId } = ideaSlice.actions;
 
 export default ideaSlice.reducer;
