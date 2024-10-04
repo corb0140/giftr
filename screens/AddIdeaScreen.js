@@ -6,16 +6,19 @@ import {
   KeyboardAvoidingView,
   Platform,
   TextInput,
-  Pressable,
   Image,
+  Pressable,
+  Button,
+  Dimensions,
 } from "react-native";
 
-import { Dimensions } from "react-native";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CameraView, Camera } from "expo-camera";
 import uuid from "react-native-uuid";
-import * as ImagePicker from "expo-image-picker";
 import { useDispatch } from "react-redux";
 
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { addPersonIdea } from "../redux/slices/personSlice";
 import ModalComponent from "../components/Modal";
@@ -24,14 +27,41 @@ const AddIdeaScreen = ({ navigation }) => {
   const { name, id } = useSelector((state) => state.people);
   const dispatch = useDispatch();
 
-  const [idea, setIdea] = useState("");
-  const [image, setImage] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [aspectRatio, setAspectRatio] = useState([2 / 3]);
+  //camera
+  const [hasPermission, setHasPermission] = useState(null);
+  const [photo, setPhoto] = useState(null);
+  const cameraRef = useRef(null);
 
+  //useStates / useRefs
+  const [idea, setIdea] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // Calculate image size
+  const aspectRatio = 2 / 3;
   const screenWidth = Dimensions.get("window").width;
-  const imageWidth = screenWidth * 0.6;
-  const imageHeight = imageWidth * aspectRatio;
+  const imageWidth = Math.round(screenWidth * 0.6);
+  const imageHeight = Math.round(imageWidth * aspectRatio);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
+  const takePicture = async () => {
+    if (cameraRef.current) {
+      const photo = await cameraRef.current.takePictureAsync();
+      setPhoto(photo.uri);
+    }
+  };
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
 
   const addIdeaHandler = () => {
     if (idea === "") {
@@ -43,9 +73,9 @@ const AddIdeaScreen = ({ navigation }) => {
           idea: {
             id: uuid.v4(),
             idea: idea,
-            img: image,
-            width: Math.round(imageWidth),
-            height: Math.round(imageHeight),
+            img: photo,
+            width: imageWidth,
+            height: imageHeight,
           },
         })
       );
@@ -57,27 +87,12 @@ const AddIdeaScreen = ({ navigation }) => {
   };
 
   const resetFormHandler = () => {
-    set("");
-    setImage(null);
-    navigation.goBack();
-  };
-
-  const takePhoto = async () => {
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
-    if (permissionResult.granted === false) {
-      alert("Permission to access camera is required!");
-      return;
-    }
-
-    let result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      quality: 1,
+    setIdea("");
+    setPhoto(null);
+    navigation.goBack({
+      id: id,
+      name: name,
     });
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
   };
 
   return (
@@ -98,12 +113,17 @@ const AddIdeaScreen = ({ navigation }) => {
             />
           </View>
 
-          <View>
-            <Pressable onPress={takePhoto} style={styles.cameraButton}>
-              <Text style={styles.text}>Camera</Text>
-            </Pressable>
-            {image && <Image source={{ uri: image }} style={styles.image} />}
-          </View>
+          {!photo ? (
+            <CameraView style={styles.camera} ref={cameraRef}>
+              <View style={styles.cameraButtonContainer}>
+                <Pressable title="Take Picture" onPress={takePicture}>
+                  <AntDesign name="camera" size={50} color="white" />
+                </Pressable>
+              </View>
+            </CameraView>
+          ) : (
+            <Image source={{ uri: photo }} style={styles.image} />
+          )}
         </View>
 
         <View style={styles.buttonContainer}>
@@ -180,6 +200,18 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   image: {
-    width: "60%",
+    width: 150,
+    height: 150,
+  },
+  camera: {
+    width: "100%",
+    height: 300,
+  },
+  cameraButtonContainer: {
+    width: "100%",
+    position: "absolute",
+    bottom: 20,
+    flexDirection: "row",
+    justifyContent: "center",
   },
 });

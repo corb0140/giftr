@@ -1,4 +1,11 @@
-import { SafeAreaView, StyleSheet, Text, View, FlatList } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Image,
+} from "react-native";
 
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,10 +22,6 @@ const IdeaScreen = ({ route }) => {
     dispatch(assignName(name));
     dispatch(assignId(id));
   }, [dispatch, id, name]);
-
-  useEffect(() => {
-    console.log(personIdeas.ideas);
-  }, [people]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -38,6 +41,10 @@ const IdeaScreen = ({ route }) => {
             renderItem={({ item }) => (
               <View style={styles.ideaListMessageView}>
                 <Text style={styles.ideaListMessage}>{item.idea}</Text>
+                <Image
+                  source={{ uri: item.img }}
+                  style={{ width: 100, height: 100 }}
+                />
               </View>
             )}
           />
