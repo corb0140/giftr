@@ -1,11 +1,11 @@
 import { Modal, StyleSheet, View, Pressable, Text } from "react-native";
 
-const ModalComponent = ({ visible, close }) => {
+const ModalComponent = ({ visible, close, text }) => {
   return (
     <Modal animationType="slide" visible={visible} transparent={true}>
       <View style={styles.modalContainer}>
         <View style={styles.modalView}>
-          <Text style={styles.modalText}>Please fill in all fields</Text>
+          <Text style={styles.modalText}>{text}</Text>
           <Pressable style={styles.modalButton} onPress={close}>
             <Text style={styles.modalButtonText}>Close</Text>
           </Pressable>
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
   modalText: {
     fontSize: 18,
     marginBottom: 20,
+    textAlign: "center",
   },
   modalButton: {
     backgroundColor: "#0075f2",

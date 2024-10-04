@@ -15,24 +15,26 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { addIdea } from "../redux/slices/ideaSlice";
+import ModalComponent from "../components/Modal";
 
 const AddIdeaScreen = ({ navigation }) => {
   const { name, id } = useSelector((state) => state.ideas);
   const dispatch = useDispatch();
-  const [gift, setGift] = useState("");
+  const [idea, setIdea] = useState("");
   const [image, setImage] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
   const [ratio, setRatio] = useState(0);
 
-  const idea = {
-    idea: gift,
+  const gift = {
+    idea: idea,
     image: image,
   };
 
-  const addIdeaHandler = (idea) => {
-    if (idea.idea === "") {
-      alert("Please add an idea");
+  const addIdeaHandler = (gift) => {
+    if (gift.idea === "" || gift.image === null) {
+      setModalVisible(true);
     } else {
-      dispatch(addIdea(idea));
+      dispatch(addIdea(gift));
       navigation.navigate("Idea", {
         itemId: id,
         name: name,
@@ -79,7 +81,7 @@ const AddIdeaScreen = ({ navigation }) => {
             <Text style={{ paddingBottom: 5 }}>Gift idea</Text>
             <TextInput
               style={styles.input}
-              onChangeText={(text) => setGift(text)}
+              onChangeText={(text) => setIdea(text)}
             />
           </View>
 
@@ -90,7 +92,7 @@ const AddIdeaScreen = ({ navigation }) => {
           <Pressable
             style={[styles.button, { backgroundColor: "#0075f2" }]}
             onPress={() => {
-              addIdeaHandler(idea);
+              addIdeaHandler(gift);
             }}
           >
             <Text style={styles.buttonText}>Save</Text>
@@ -104,6 +106,16 @@ const AddIdeaScreen = ({ navigation }) => {
           </Pressable>
         </View>
       </KeyboardAvoidingView>
+
+      {modalVisible && (
+        <ModalComponent
+          text="Please add an idea and an image"
+          visible={modalVisible}
+          close={() => {
+            setModalVisible(!modalVisible);
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 };

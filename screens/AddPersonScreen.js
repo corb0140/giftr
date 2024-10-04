@@ -91,6 +91,7 @@ const AddPersonScreen = ({ navigation }) => {
 
       {modalVisible && (
         <ModalComponent
+          text="Please fill in all fields"
           visible={modalVisible}
           close={() => {
             setModalVisible(!modalVisible);
