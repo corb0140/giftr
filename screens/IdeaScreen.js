@@ -14,10 +14,7 @@ const IdeaScreen = ({ route }) => {
     dispatch(assignId(id));
   }, [dispatch, id, name]);
 
-  useEffect(() => {
-    console.log();
-    console.log(people[0].ideas);
-  }, [people]);
+  const personIdeas = people.find((person) => person.id === id);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -26,17 +23,17 @@ const IdeaScreen = ({ route }) => {
       </View>
 
       <View style={styles.ideaListView}>
-        {people[0].ideas.length === 0 ? (
+        {personIdeas && personIdeas.ideas.length === 0 ? (
           <View style={styles.ideaListMessageView}>
             <Text style={styles.ideaListMessage}>No Ideas Added Yet</Text>
           </View>
         ) : (
           <FlatList
-            data={people.ideas}
+            data={personIdeas?.ideas}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View style={styles.ideaListMessageView}>
-                <Text style={styles.ideaListMessage}>{item.name}</Text>
+                <Text style={styles.ideaListMessage}>{item.id}</Text>
               </View>
             )}
           />

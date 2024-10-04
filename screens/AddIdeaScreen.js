@@ -28,17 +28,16 @@ const AddIdeaScreen = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [aspectRatio, setAspectRatio] = useState([2 / 3]);
 
-  const gift = {
-    id: uuid.v4(),
-    idea: idea,
-    image: image,
-  };
-
-  const addIdeaHandler = (gift) => {
-    if (gift.idea === "") {
+  const addIdeaHandler = () => {
+    if (idea === "") {
       setModalVisible(true);
     } else {
-      dispatch(addPersonIdea({ personId: id, idea: gift }));
+      dispatch(
+        addPersonIdea({
+          personId: id,
+          idea: { id: uuid.v4(), idea: idea, image: image },
+        })
+      );
       navigation.navigate("Idea", {
         id: id,
         name: name,
@@ -47,7 +46,7 @@ const AddIdeaScreen = ({ navigation }) => {
   };
 
   const resetFormHandler = () => {
-    setIdea("");
+    set("");
     setImage(null);
     navigation.goBack();
   };
@@ -99,9 +98,7 @@ const AddIdeaScreen = ({ navigation }) => {
         <View style={styles.buttonContainer}>
           <Pressable
             style={[styles.button, { backgroundColor: "#0075f2" }]}
-            onPress={() => {
-              addIdeaHandler(gift);
-            }}
+            onPress={addIdeaHandler}
           >
             <Text style={styles.buttonText}>Save</Text>
           </Pressable>
