@@ -30,10 +30,6 @@ const IdeaScreen = ({ route }) => {
     dispatch(assignId(id));
   }, [dispatch, id, name]);
 
-  useEffect(() => {
-    console.log(personIdeas);
-  }, [personIdeas]);
-
   const deletePersonIdeaHandler = (ideaId) => {
     console.log(ideaId);
     dispatch(deletePersonIdea({ personId: id, ideaId: ideaId }));
