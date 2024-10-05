@@ -1,18 +1,21 @@
 import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const PeopleScreen = ({ navigation }) => {
   const { people } = useSelector((state) => state.people);
+  const [sortedPeople, setSortedPeople] = useState([]);
 
   useEffect(() => {
-    console.log(people);
     // if (people.length == 0) {
-    //   alert("Please add a person");
-    // }
+    //     alert("Please add a person");
+    //   }
+
+    setSortedPeople([...people]);
   }, [people]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.textView}>
@@ -28,7 +31,7 @@ const PeopleScreen = ({ navigation }) => {
           </View>
         ) : (
           <FlatList
-            data={people}
+            data={sortedPeople.sort((a, b) => a.dob.localeCompare(b.dob))}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <View style={styles.itemContainer}>
