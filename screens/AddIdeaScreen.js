@@ -8,7 +8,6 @@ import {
   TextInput,
   Image,
   Pressable,
-  Button,
   Dimensions,
 } from "react-native";
 
@@ -23,6 +22,12 @@ import { useSelector } from "react-redux";
 import { addPersonIdea } from "../redux/slices/personSlice";
 import ModalComponent from "../components/Modal";
 
+// Calculate image size
+const aspectRatio = 2 / 3;
+const screenWidth = Dimensions.get("window").width;
+const imageWidth = Math.round(screenWidth * 0.6);
+const imageHeight = Math.round(imageWidth * aspectRatio);
+
 const AddIdeaScreen = ({ navigation }) => {
   const { name, id } = useSelector((state) => state.people);
   const dispatch = useDispatch();
@@ -36,22 +41,29 @@ const AddIdeaScreen = ({ navigation }) => {
   const [idea, setIdea] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
-  // Calculate image size
-  const aspectRatio = 2 / 3;
-  const screenWidth = Dimensions.get("window").width;
-  const imageWidth = Math.round(screenWidth * 0.6);
-  const imageHeight = Math.round(imageWidth * aspectRatio);
-
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
+
+      await AsyncStorage.setItem("width", JSON.stringify(imageWidth));
+      await AsyncStorage.setItem("height", JSON.stringify(imageHeight));
     })();
   }, []);
 
   const takePicture = async () => {
     if (cameraRef.current) {
-      const photo = await cameraRef.current.takePictureAsync();
+      const sizes = await cameraRef.current
+        .getAvailablePictureSizesAsync()
+        .then((sizes) => {
+          console.log(sizes);
+        });
+
+      const photo = await cameraRef.current.takePictureAsync({
+        quality: 1,
+        width: imageWidth,
+        height: imageHeight,
+      });
       setPhoto(photo.uri);
     }
   };
@@ -200,12 +212,12 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   image: {
-    width: 150,
-    height: 150,
+    width: imageWidth,
+    height: imageHeight,
   },
   camera: {
-    width: "100%",
-    height: 300,
+    width: imageWidth,
+    height: imageHeight,
   },
   cameraButtonContainer: {
     width: "100%",

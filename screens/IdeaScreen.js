@@ -7,11 +7,13 @@ import {
   Image,
 } from "react-native";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { assignName, assignId } from "../redux/slices/personSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const IdeaScreen = ({ route }) => {
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const { id, name } = route.params;
   const { people } = useSelector((state) => state.people);
   const dispatch = useDispatch();
@@ -22,6 +24,19 @@ const IdeaScreen = ({ route }) => {
     dispatch(assignName(name));
     dispatch(assignId(id));
   }, [dispatch, id, name]);
+
+  useEffect(() => {
+    const getDimensions = async () => {
+      const storedWidth = await AsyncStorage.getItem("width");
+      const storedHeight = await AsyncStorage.getItem("height");
+
+      setDimensions({
+        width: JSON.parse(storedWidth),
+        height: JSON.parse(storedHeight),
+      });
+    };
+    getDimensions();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -43,7 +58,7 @@ const IdeaScreen = ({ route }) => {
                 <Text style={styles.ideaListMessage}>{item.idea}</Text>
                 <Image
                   source={{ uri: item.img }}
-                  style={{ width: 100, height: 100 }}
+                  style={{ width: dimensions.width, height: dimensions.height }}
                 />
               </View>
             )}
