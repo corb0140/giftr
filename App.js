@@ -1,14 +1,13 @@
 import StoreProvider from "./redux/StoreProvider";
 import Navigation from "./StackNavigator";
-
-import { StyleSheet } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
   return (
-    <StoreProvider>
-      <Navigation />
-    </StoreProvider>
+    <SafeAreaProvider>
+      <StoreProvider>
+        <Navigation />
+      </StoreProvider>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({});
