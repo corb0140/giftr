@@ -5,11 +5,16 @@ import {
   View,
   FlatList,
   Image,
+  Pressable,
 } from "react-native";
 
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { assignName, assignId } from "../redux/slices/personSlice";
+import {
+  assignName,
+  assignId,
+  deletePersonIdea,
+} from "../redux/slices/personSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const IdeaScreen = ({ route }) => {
@@ -24,6 +29,15 @@ const IdeaScreen = ({ route }) => {
     dispatch(assignName(name));
     dispatch(assignId(id));
   }, [dispatch, id, name]);
+
+  useEffect(() => {
+    console.log(personIdeas);
+  }, [personIdeas]);
+
+  const deletePersonIdeaHandler = (ideaId) => {
+    console.log(ideaId);
+    dispatch(deletePersonIdea({ personId: id, ideaId: ideaId }));
+  };
 
   useEffect(() => {
     const getDimensions = async () => {
@@ -61,6 +75,14 @@ const IdeaScreen = ({ route }) => {
                   source={{ uri: item.img }}
                   style={{ width: dimensions.width, height: dimensions.height }}
                 />
+                <Pressable
+                  style={styles.deleteButton}
+                  onPress={() => {
+                    deletePersonIdeaHandler(item.id);
+                  }}
+                >
+                  <Text style={styles.deleteButtonText}>Delete</Text>
+                </Pressable>
               </View>
             )}
           />
@@ -105,5 +127,16 @@ const styles = StyleSheet.create({
     zIndex: 1,
     right: 10,
     top: 0,
+  },
+  deleteButton: {
+    marginVertical: 10,
+    backgroundColor: "#d10000",
+    padding: 10,
+    width: 100,
+    alignItems: "center",
+  },
+  deleteButtonText: {
+    textTransform: "uppercase",
+    fontSize: 16,
   },
 });

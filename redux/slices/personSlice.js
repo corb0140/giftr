@@ -27,10 +27,16 @@ const personSlice = createSlice({
       }
     },
 
-    deletePerson: (state, action) => {
-      state.people = state.people.filter(
-        (person) => person.id !== action.payload
+    deletePersonIdea: (state, action) => {
+      const person = state.people.find(
+        (person) => person.id === action.payload.personId
       );
+
+      if (person) {
+        person.ideas = person.ideas.filter(
+          (idea) => idea.id !== action.payload.ideaId
+        );
+      }
     },
 
     assignName: (state, action) => {
@@ -43,7 +49,12 @@ const personSlice = createSlice({
   },
 });
 
-export const { addPerson, addPersonIdea, assignId, assignName, deletePerson } =
-  personSlice.actions;
+export const {
+  addPerson,
+  addPersonIdea,
+  assignId,
+  assignName,
+  deletePersonIdea,
+} = personSlice.actions;
 
 export default personSlice.reducer;
