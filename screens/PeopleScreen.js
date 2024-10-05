@@ -3,16 +3,14 @@ import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import ModalComponent from "../components/Modal";
 
 const PeopleScreen = ({ navigation }) => {
   const { people } = useSelector((state) => state.people);
   const [sortedPeople, setSortedPeople] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    // if (people.length == 0) {
-    //     alert("Please add a person");
-    //   }
-
     setSortedPeople([...people]);
   }, [people]);
 
@@ -56,6 +54,16 @@ const PeopleScreen = ({ navigation }) => {
           />
         )}
       </View>
+
+      {people.length === 0 && (
+        <ModalComponent
+          text="Please add a person"
+          visible={!modalVisible}
+          close={() => {
+            setModalVisible(!modalVisible);
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 };

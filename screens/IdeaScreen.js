@@ -31,7 +31,6 @@ const IdeaScreen = ({ route }) => {
   }, [dispatch, id, name]);
 
   const deletePersonIdeaHandler = (ideaId) => {
-    console.log(ideaId);
     dispatch(deletePersonIdea({ personId: id, ideaId: ideaId }));
   };
 

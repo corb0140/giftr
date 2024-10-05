@@ -19,10 +19,6 @@ const personSlice = createSlice({
         (person) => person.id === action.payload.personId
       );
       if (person) {
-        if (!person.ideas) {
-          person.ideas = [];
-        }
-
         person.ideas.push(action.payload.idea);
       }
     },
