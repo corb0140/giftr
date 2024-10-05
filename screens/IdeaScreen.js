@@ -51,6 +51,7 @@ const IdeaScreen = ({ route }) => {
           </View>
         ) : (
           <FlatList
+            style={{ marginBottom: 80 }}
             data={personIdeas?.ideas}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (

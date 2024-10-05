@@ -25,8 +25,8 @@ import ModalComponent from "../components/Modal";
 // Calculate image size
 const aspectRatio = 2 / 3;
 const screenWidth = Dimensions.get("window").width;
-const imageWidth = Math.round(screenWidth * 0.6);
-const imageHeight = Math.round(imageWidth * aspectRatio);
+const imageWidth = Math.round(screenWidth * 0.7);
+const imageHeight = Math.round(screenWidth * aspectRatio);
 
 const AddIdeaScreen = ({ navigation }) => {
   const { name, id } = useSelector((state) => state.people);
@@ -60,9 +60,7 @@ const AddIdeaScreen = ({ navigation }) => {
         });
 
       const photo = await cameraRef.current.takePictureAsync({
-        quality: 1,
-        width: imageWidth,
-        height: imageHeight,
+        quality: 0.8,
       });
       setPhoto(photo.uri);
     }
@@ -101,7 +99,7 @@ const AddIdeaScreen = ({ navigation }) => {
   const resetFormHandler = () => {
     setIdea("");
     setPhoto(null);
-    navigation.goBack({
+    navigation.navigate("People", {
       id: id,
       name: name,
     });
