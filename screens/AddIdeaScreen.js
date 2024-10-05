@@ -60,7 +60,7 @@ const AddIdeaScreen = ({ navigation }) => {
         });
 
       const photo = await cameraRef.current.takePictureAsync({
-        quality: 0.8,
+        quality: 1,
       });
       setPhoto(photo.uri);
     }
