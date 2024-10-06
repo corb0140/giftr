@@ -17,13 +17,23 @@ import {
 } from "../redux/slices/personSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import ImageModal from "../components/ImageModal";
+
 const IdeaScreen = ({ route }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [storeImage, setStoreImage] = useState(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const { id, name } = route.params;
   const { people } = useSelector((state) => state.people);
   const dispatch = useDispatch();
 
   const personIdeas = people.find((person) => person.id === id);
+
+  const storeImageHandler = (image, id) => {
+    if (id && image) {
+      setStoreImage(image);
+    }
+  };
 
   useEffect(() => {
     dispatch(assignName(name));
@@ -40,8 +50,8 @@ const IdeaScreen = ({ route }) => {
       const storedHeight = await AsyncStorage.getItem("height");
 
       setDimensions({
-        width: JSON.parse(storedWidth),
-        height: JSON.parse(storedHeight),
+        width: JSON.parse(storedWidth) / 1.5,
+        height: JSON.parse(storedHeight) / 1.5,
       });
     };
     getDimensions();
@@ -66,10 +76,21 @@ const IdeaScreen = ({ route }) => {
             renderItem={({ item }) => (
               <View style={styles.ideaListMessageView}>
                 <Text style={styles.ideaListMessage}>{item.idea}</Text>
-                <Image
-                  source={{ uri: item.img }}
-                  style={{ width: dimensions.width, height: dimensions.height }}
-                />
+                <Pressable
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                    storeImageHandler(item.img, item.id);
+                  }}
+                >
+                  <Image
+                    source={{ uri: item.img }}
+                    style={{
+                      width: dimensions.width,
+                      height: dimensions.height,
+                    }}
+                  />
+                </Pressable>
+
                 <Pressable
                   style={styles.deleteButton}
                   onPress={() => {
@@ -83,6 +104,14 @@ const IdeaScreen = ({ route }) => {
           />
         )}
       </View>
+
+      {modalVisible && (
+        <ImageModal
+          image={storeImage}
+          visible={modalVisible}
+          close={() => setModalVisible(!modalVisible)}
+        />
+      )}
     </SafeAreaView>
   );
 };
