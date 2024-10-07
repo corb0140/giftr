@@ -74,7 +74,7 @@ const AddIdeaScreen = ({ navigation }) => {
   }
 
   const addIdeaHandler = () => {
-    if (idea === "") {
+    if (idea === "" || photo === null) {
       setModalVisible(true);
     } else {
       dispatch(
