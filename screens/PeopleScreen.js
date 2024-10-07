@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   peopleListView: {
-    paddingTop: 40,
+    marginVertical: 20,
     paddingLeft: 10,
     paddingRight: 10,
   },
